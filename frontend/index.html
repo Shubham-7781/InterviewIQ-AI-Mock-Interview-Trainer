@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>InterviewIQ — AI Mock Interview Trainer</title>
+<meta name="description" content="AI-powered mock interview trainer for placement prep: voice-based Q&A, real-time AI scoring, and readiness reports." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=6" />
+</head>
+<body>
+
+<header class="panel-bar">
+  <div class="panel-bar__inner">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3.4" fill="currentColor"/></svg>
+      </span>
+      <span class="brand__name">InterviewIQ</span>
+    </div>
+    <nav class="panel-nav">
+      <button class="panel-nav__btn is-active" data-nav="setup">New Interview</button>
+      <button class="panel-nav__btn" data-nav="dashboard">Dashboard</button>
+    </nav>
+    <div class="panel-status" id="apiStatus">
+      <span class="dot" id="apiDot"></span>
+      <span id="apiStatusText">checking API…</span>
+    </div>
+  </div>
+</header>
+
+<main class="stage">
+
+  <!-- ===================== SETUP VIEW ===================== -->
+  <section class="view is-active" id="view-setup">
+    <div class="hero">
+      <p class="eyebrow">Placement prep, panel-tested</p>
+      <h1 class="hero__title">Walk into your real interview<br/>having already survived this one.</h1>
+      <p class="hero__sub">Pick a role, speak your answers out loud, and get panel-style scoring on content, structure,
+        technical accuracy, clarity and confidence — powered by Claude.</p>
+    </div>
+
+    <form class="card setup-card" id="setupForm">
+      <div class="field-grid">
+        <label class="field">
+          <span class="field__label">Your name</span>
+          <input type="text" name="studentName" placeholder="e.g. Ananya Sharma" required />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Target role</span>
+          <select name="role" required>
+            <option value="">Select role</option>
+            <option>Software Development Engineer (SDE)</option>
+            <option>Data Analyst</option>
+            <option>Data Scientist / ML Engineer</option>
+            <option>Frontend Developer</option>
+            <option>Backend Developer</option>
+            <option>Product Manager (Intern)</option>
+            <option>Business Analyst</option>
+            <option>QA / SDET</option>
+            <option>DevOps Engineer</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Domain / track</span>
+          <select name="domain" required>
+            <option value="">Select domain</option>
+            <option>Data Structures & Algorithms</option>
+            <option>Web Development</option>
+            <option>Databases & SQL</option>
+            <option>Operating Systems & CN</option>
+            <option>Machine Learning</option>
+            <option>System Design (basics)</option>
+            <option>General HR / Behavioral</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Interview mode</span>
+          <select name="mode" required>
+            <option value="Mixed">Mixed (Technical + HR)</option>
+            <option value="Technical">Technical only</option>
+            <option value="HR/Behavioral">HR / Behavioral only</option>
+            <option value="Case Study">Case Study</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Difficulty</span>
+          <select name="difficulty" required>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate" selected>Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Number of questions</span>
+          <select name="count">
+            <option value="3">3 (quick)</option>
+            <option value="5" selected>5 (standard)</option>
+            <option value="8">8 (full panel)</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="resume-drop" id="resumeDrop">
+        <input type="file" id="resumeInput" accept="application/pdf" hidden />
+        <div class="resume-drop__text">
+          <strong>Upload your resume (PDF)</strong> to get 2+ questions personalized to your real projects & skills.
+          <span class="muted">Optional, but recommended — this is what most tools skip.</span>
+        </div>
+        <button type="button" class="btn btn--ghost" id="resumeBtn">Choose file</button>
+        <span class="resume-drop__filename" id="resumeFilename"></span>
+      </div>
+
+      <div class="setup-actions">
+        <button type="submit" class="btn btn--primary" id="startBtn">
+          Start mock interview
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <p class="setup-hint muted">Uses your microphone for voice answers. You can also type instead.</p>
+      </div>
+    </form>
+
+    <div class="feature-strip">
+      <div class="feature-chip">🎙️ Voice-based answers</div>
+      <div class="feature-chip">📄 Resume-aware questions</div>
+      <div class="feature-chip">📊 5-dimension AI scoring</div>
+      <div class="feature-chip">🧭 STAR-method detection</div>
+      <div class="feature-chip">📈 Progress dashboard</div>
+      <div class="feature-chip">🧾 Downloadable report</div>
+    </div>
+  </section>
+
+  <!-- ===================== INTERVIEW VIEW ===================== -->
+  <section class="view" id="view-interview">
+    <div class="interview-layout">
+
+      <div class="interview-main card">
+        <div class="interview-meta">
+          <span class="pill" id="questionCounter">Question 1 of 5</span>
+          <span class="pill pill--ghost" id="questionType">technical</span>
+          <div class="timer" id="timerDisplay">02:00</div>
+        </div>
+
+        <h2 class="question-text" id="questionText">Loading your first question…</h2>
+
+        <div class="mic-cluster">
+          <button class="mic-ring" id="micButton" aria-label="Start answering">
+            <svg id="micIcon" width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <rect x="9" y="3" width="6" height="11" rx="3" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M5 11a7 7 0 0 0 14 0M12 18v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <svg class="mic-progress" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="54" class="mic-progress__track"/>
+              <circle cx="60" cy="60" r="54" class="mic-progress__bar" id="micProgressBar"/>
+            </svg>
+          </button>
+          <div class="mic-status" id="micStatus">Tap the mic to speak your answer</div>
+          <button class="link-btn" id="toggleTypeMode">or type your answer instead</button>
+        </div>
+
+        <div class="type-answer" id="typeAnswerBox" hidden>
+          <textarea id="typeAnswerText" rows="5" placeholder="Type your answer here…"></textarea>
+        </div>
+
+        <div class="transcript-box" id="transcriptBox" hidden>
+          <p class="transcript-box__label">Live transcript</p>
+          <p id="transcriptText"></p>
+        </div>
+
+        <div class="interview-controls">
+          <button class="btn btn--ghost" id="listenQuestionBtn">🔊 Read question aloud</button>
+          <button class="btn btn--primary" id="submitAnswerBtn" disabled>Submit answer</button>
+        </div>
+      </div>
+
+      <aside class="interview-side card">
+        <h3 class="side-title">This round</h3>
+        <ul class="progress-list" id="progressList"></ul>
+        <div class="tip-box">
+          <p class="tip-box__title">Panel tip</p>
+          <p id="tipText">Structure answers with the STAR method — Situation, Task, Action, Result.</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="eval-overlay" id="evalOverlay" hidden>
+      <div class="eval-card">
+        <div class="spinner" id="evalSpinner"></div>
+        <p id="evalOverlayText">Scoring your answer against panel expectations…</p>
+        <div class="eval-overlay__actions" id="evalOverlayActions" hidden>
+          <button class="btn btn--primary" id="evalRetryBtn">Try again</button>
+          <button class="btn btn--ghost" id="evalCancelBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== REPORT VIEW ===================== -->
+  <section class="view" id="view-report">
+    <div class="report-header">
+      <p class="eyebrow">Interview readiness report</p>
+      <h1 class="report-score" id="reportOverallScore">—</h1>
+      <p class="muted" id="reportSubtitle">Role · Domain · Mode</p>
+    </div>
+
+    <div class="report-grid">
+      <div class="card report-chart-card">
+        <h3>Skill breakdown</h3>
+        <canvas id="radarChart" height="260"></canvas>
+      </div>
+
+      <div class="card report-summary-card">
+        <h3>Panel summary</h3>
+        <p id="reportSummaryText" class="report-summary-text"></p>
+
+        <div class="report-cols">
+          <div>
+            <p class="report-cols__title">Top strengths</p>
+            <ul id="reportStrengths" class="tick-list"></ul>
+          </div>
+          <div>
+            <p class="report-cols__title">Priority improvements</p>
+            <ul id="reportImprovements" class="cross-list"></ul>
+          </div>
+        </div>
+
+        <div class="prep-plan">
+          <p class="report-cols__title">Recommended prep plan</p>
+          <ol id="reportPrepPlan" class="prep-plan__list"></ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="card question-breakdown">
+      <h3>Question-by-question breakdown</h3>
+      <div id="questionBreakdownList"></div>
+    </div>
+
+    <div class="report-actions">
+      <button class="btn btn--primary" id="downloadReportBtn">⬇ Download report (PDF-ready print)</button>
+      <button class="btn btn--ghost" id="retakeBtn">Start another interview</button>
+      <button class="btn btn--ghost" id="goDashboardBtn">View progress dashboard</button>
+    </div>
+  </section>
+
+  <!-- ===================== DASHBOARD VIEW ===================== -->
+  <section class="view" id="view-dashboard">
+    <div class="hero hero--compact">
+      <p class="eyebrow">Your placement prep, over time</p>
+      <h1 class="hero__title">Progress dashboard</h1>
+    </div>
+
+    <div class="dash-grid">
+      <div class="card dash-stat">
+        <p class="dash-stat__label">Sessions completed</p>
+        <p class="dash-stat__value" id="statSessions">0</p>
+      </div>
+      <div class="card dash-stat">
+        <p class="dash-stat__label">Average readiness score</p>
+        <p class="dash-stat__value" id="statAvgScore">0</p>
+      </div>
+      <div class="card dash-stat">
+        <p class="dash-stat__label">Best dimension</p>
+        <p class="dash-stat__value dash-stat__value--small" id="statBestDim">—</p>
+      </div>
+      <div class="card dash-stat">
+        <p class="dash-stat__label">Focus area</p>
+        <p class="dash-stat__value dash-stat__value--small" id="statFocusDim">—</p>
+      </div>
+    </div>
+
+    <div class="card dash-trend">
+      <h3>Readiness score trend</h3>
+      <canvas id="trendChart" height="220"></canvas>
+    </div>
+
+    <div class="card dash-history">
+      <h3>Session history</h3>
+      <div id="historyList" class="history-list"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>Built by a final-year student to practice placement interviews — powered by the Groq API, the Web Speech API, and Chart.js.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="js/api.js?v=6"></script>
+<script src="js/speech.js?v=6"></script>
+<script src="js/charts.js?v=6"></script>
+<script src="js/app.js?v=6"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+{
+  "sessions": [
+    {
+      "id": "a134a341-4c7a-4c7a-8d53-cedaa762da11",
+      "studentName": "shubham choubey",
+      "role": "Data Analyst",
+      "domain": "Databases & SQL",
+      "mode": "Mixed",
+      "difficulty": "Intermediate",
+      "createdAt": "2026-07-04T12:58:12.454Z",
+      "questionResults": [
+        {
+          "question": "What is the difference between INNER JOIN and LEFT JOIN in SQL? Provide an example to illustrate your point.",
+          "type": "technical",
+          "answerText": "| INNER JOIN                                                      | LEFT JOIN                                                                                             |\n| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |\n| Returns only the rows that have matching values in both tables. | Returns all rows from the left table and the matching rows from the right table.                      |\n| Unmatched rows are excluded.                                    | Unmatched rows from the left table are included, with `NULL` values for columns from the right table. |",
+          "scores": {
+            "contentRelevance": 8,
+            "structure": 6,
+            "technicalAccuracy": 9,
+            "communicationClarity": 7,
+            "confidence": 8
+          },
+          "overallScore": 7.6,
+          "strengths": [
+            "Accurately defines INNER and LEFT JOIN",
+            "Provides key differences between the two"
+          ],
+          "improvements": [
+            "Include an example query to illustrate the difference",
+            "Explain the result set to further clarify the concepts"
+          ],
+          "starMethodUsed": false,
+          "modelAnswerSummary": "A strong answer should define INNER and LEFT JOIN, provide an example query such as selecting orders and customers, and explain the resulting dataset to demonstrate understanding of the JOIN types.",
+          "verdict": "You're on the right track, but practice providing concrete examples to solidify your technical explanations."
+        },
+        {
+          "question": "Tell me about a situation where you had to work with a large dataset. How did you handle it and what tools or techniques did you use?",
+          "type": "behavioral",
+          "answerText": "If this is for an interview, you can answer using a real project or a well-structured academic example. Here's a strong sample answer:\n\n> During one of my engineering projects, I worked with a large dataset generated from IoT sensors used for industrial motor health monitoring. The dataset contained thousands of records of temperature, vibration, and current readings collected over time.\n>\n> To handle the data efficiently, I first cleaned it by removing duplicate records, handling missing values, and checking for outliers. I used **Python** with the **Pandas** library to preprocess and analyze the data. For storing and querying the data, I used **SQL**, which allowed me to filter, join, and aggregate records quickly.\n>\n> I also used **Excel** for quick summaries and visualizations during the initial analysis and **Matplotlib** to create graphs that helped identify trends and abnormal sensor readings. To improve performance, I processed only the required columns, used filtering instead of loading unnecessary data, and optimized SQL queries with indexes where appropriate.\n>\n> As a result, I was able to identify patterns in the sensor data, detect potential equipment issues, and generate meaningful reports that supported the project's objective of predictive maintenance.\n\n**Tools and techniques used:**\n\n* **Python (Pandas)** – Data cleaning and analysis\n* **SQL** – Querying and managing data\n* **Excel** – Initial exploration and reporting\n* **Matplotlib** – Data visualization\n* **Techniques:** Data cleaning, filtering, aggregation, handling missing values, and query optimization\n\nThis answer demonstrates practical experience with large datasets, analytical thinking, and familiarity with commonly used data-processing tools.",
+          "scores": {
+            "contentRelevance": 9,
+            "structure": 8,
+            "technicalAccuracy": 9,
+            "communicationClarity": 8,
+            "confidence": 8
+          },
+          "overallScore": 8.4,
+          "strengths": [
+            "Provided a clear and relevant example from a project",
+            "Effectively listed the tools and techniques used for handling the large dataset"
+          ],
+          "improvements": [
+            "Could improve by quantifying the size of the dataset or specific challenges faced",
+            "Adding more detail on the insights gained or the impact of the analysis on the project"
+          ],
+          "starMethodUsed": false,
+          "modelAnswerSummary": "A strong answer describes a specific situation, outlines the approach to handling a large dataset, and highlights the tools and techniques used, such as data cleaning, filtering, and visualization.",
+          "verdict": "You demonstrated solid analytical skills and a good grasp of data handling tools, but consider adding more specifics and outcomes to make your answers more compelling."
+        },
+        {
+          "question": "A company has two tables: Orders (order_id, customer_id, order_date) and Customers (customer_id, name, email). Write a SQL query to retrieve the customer name and email for all orders made in the last 30 days.",
+          "type": "technical",
+          "answerText": "SELECT\n    c.name,\n    c.email,\n    o.order_id,\n    o.order_date\nFROM Orders o\nINNER JOIN Customers c\n    ON o.customer_id = c.customer_id\nWHERE o.order_date >= CURRENT_DATE - INTERVAL 30 DAY;",
+          "scores": {
+            "contentRelevance": 9,
+            "structure": 8,
+            "technicalAccuracy": 9,
+            "communicationClarity": 8,
+            "confidence": 8
+          },
+          "overallScore": 8.4,
+          "strengths": [
+            "Correct SQL query syntax used",
+            "Appropriate join condition specified"
+          ],
+          "improvements": [
+            "Remove unnecessary columns from SELECT statement",
+            "Consider adding error handling for date filter"
+          ],
+          "starMethodUsed": false,
+          "modelAnswerSummary": "A strong answer should include a SQL query with an INNER JOIN on the customer_id column, a date filter using CURRENT_DATE, and only the required columns in the SELECT statement.",
+          "verdict": "Great technical skills demonstrated, refine your query to only include necessary information for better clarity."
+        },
+        {
+          "question": "You are tasked with analyzing customer purchase behavior. Describe how you would design a database schema to store customer purchase data and what metrics you would use to analyze the behavior.",
+          "type": "case_study",
+          "answerText": "To analyze customer purchase behavior effectively, the database should be normalized to avoid redundancy and make querying efficient.\n\n## Database Schema\n\n### 1. Customers Table\n\nStores customer information.\n\n| Column            | Data Type    | Description          |\n| ----------------- | ------------ | -------------------- |\n| customer_id       | INT (PK)     | Unique customer ID   |\n| name              | VARCHAR(100) | Customer name        |\n| email             | VARCHAR(100) | Email address        |\n| phone             | VARCHAR(15)  | Contact number       |\n| registration_date | DATE         | Date of registration |\n\n### 2. Products Table\n\nStores product details.\n\n| Column       | Data Type     | Description       |\n| ------------ | ------------- | ----------------- |\n| product_id   | INT (PK)      | Unique product ID |\n| product_name | VARCHAR(100)  | Product name      |\n| category     | VARCHAR(50)   | Product category  |\n| price        | DECIMAL(10,2) | Product price     |\n\n### 3. Orders Table\n\nStores order information.\n\n| Column       | Data Type     | Description          |\n| ------------ | ------------- | -------------------- |\n| order_id     | INT (PK)      | Unique order ID      |\n| customer_id  | INT (FK)      | References Customers |\n| order_date   | DATE          | Purchase date        |\n| total_amount | DECIMAL(10,2) | Total order value    |\n\n### 4. Order_Items Table\n\nStores products included in each order.\n\n| Column        | Data Type     | Description          |\n| ------------- | ------------- | -------------------- |\n| order_item_id | INT (PK)      | Unique order item ID |\n| order_id      | INT (FK)      | References Orders    |\n| product_id    | INT (FK)      | References Products  |\n| quantity      | INT           | Quantity purchased   |\n| unit_price    | DECIMAL(10,2) | Price per unit       |\n\n### Relationship Diagram\n\n```\nCustomers (1) ------< Orders (1) ------< Order_Items >------ (1) Products\n```\n\n* One customer can place many orders.\n* One order can contain multiple products.\n* One product can appear in many orders.\n\n---\n\n## Metrics to Analyze Customer Behavior\n\n1. **Total Revenue**\n\n   * Sum of all order amounts.\n   * Helps measure overall business performance.\n\n2. **Purchase Frequency**\n\n   * Number of orders placed by each customer.\n   * Identifies loyal customers.\n\n3. **Average Order Value (AOV)**\n\n   ```\n   AOV = Total Revenue / Total Number of Orders\n   ```\n\n   * Measures average spending per order.\n\n4. **Customer Lifetime Value (CLV)**\n\n   ```\n   CLV = Average Order Value × Purchase Frequency × Customer Lifespan\n   ```\n\n   * Estimates the long-term value of a customer.\n\n5. **Recency**\n\n   * Number of days since the customer's last purchase.\n   * Helps identify inactive customers.\n\n6. **Product Popularity**\n\n   * Most purchased products based on quantity sold.\n   * Useful for inventory planning.\n\n7. **Category-wise Sales**\n\n   * Revenue generated by each product category.\n   * Helps understand customer preferences.\n\n8. **Customer Retention Rate**\n\n   * Percentage of customers who make repeat purchases.\n   * Indicates customer loyalty.\n\n9. **Monthly/Weekly Sales Trends**\n\n   * Tracks sales over time to identify seasonal patterns.\n\n10. **Top Customers**\n\n    * Customers ranked by total spending or number of purchases.\n    * Useful for loyalty programs and targeted marketing.\n\n---\n\n## Tools for Analysis\n\n* **SQL:** Aggregations (`SUM`, `COUNT`, `AVG`), joins, and grouping for reporting.\n* **Python (Pandas):** Data cleaning, transformation, and advanced analysis.\n* **Power BI/Tableau:** Dashboards for interactive visualization.\n* **Excel:** Quick summaries, pivot tables, and charts.\n\n### Conclusion\n\nA schema consisting of **Customers, Products, Orders, and Order_Items** provides a scalable and efficient way to store purchase data. By analyzing metrics such as **purchase frequency, average order value, customer lifetime value, recency, retention, and product popularity**, businesses can better understand customer behavior, improve marketing strategies, optimize inventory, and increase customer satisfaction and revenue.",
+          "scores": {
+            "contentRelevance": 9,
+            "structure": 9,
+            "technicalAccuracy": 9,
+            "communicationClarity": 8,
+            "confidence": 8
+          },
+          "overallScore": 8.6,
+          "strengths": [
+            "Provided a detailed and normalized database schema",
+            "Identified key metrics for analyzing customer behavior"
+          ],
+          "improvements": [
+            "Could enhance data visualization ideas for better insight presentation",
+            "Consider adding more advanced analytics techniques for deeper customer understanding"
+          ],
+          "starMethodUsed": false,
+          "modelAnswerSummary": "A strong answer should include a well-designed database schema, key metrics such as purchase frequency and customer lifetime value, and ideas for data visualization to present findings effectively.",
+          "verdict": "You have demonstrated a solid understanding of data analysis for customer purchase behavior, but there's room for further refinement in presentation and advanced analytics techniques."
+        },
+        {
+          "question": "How do you optimize the performance of a slow-running SQL query? What are some common techniques you would use to improve query performance?",
+          "type": "technical",
+          "answerText": "Optimizing a slow-running SQL query involves identifying bottlenecks and reducing the amount of data the database has to process. Here are the most common techniques:\n\n### 1. Create Appropriate Indexes\n\nIndexes speed up data retrieval by allowing the database to find rows quickly.\n\n```sql\nCREATE INDEX idx_customer_id\nON Orders(customer_id);\n```\n\n* Index columns used in `WHERE`, `JOIN`, `ORDER BY`, and `GROUP BY`.\n* Avoid creating too many indexes, as they can slow down `INSERT`, `UPDATE`, and `DELETE` operations.\n\n---\n\n### 2. Use EXPLAIN or Execution Plans\n\nAnalyze how the database executes the query.\n\n```sql\nEXPLAIN\nSELECT *\nFROM Orders\nWHERE customer_id = 101;\n```\n\nThis helps identify:\n\n* Full table scans\n* Missing indexes\n* Expensive joins\n* High-cost operations\n\n---\n\n### 3. Select Only Required Columns\n\nAvoid using:\n\n```sql\nSELECT *\nFROM Orders;\n```\n\nInstead, use:\n\n```sql\nSELECT order_id, customer_id, order_date\nFROM Orders;\n```\n\nThis reduces data transfer and improves performance.\n\n---\n\n### 4. Optimize WHERE Clauses\n\nFilter records as early as possible.\n\nInstead of applying functions to indexed columns:\n\n```sql\nWHERE YEAR(order_date) = 2025\n```\n\nUse:\n\n```sql\nWHERE order_date BETWEEN '2025-01-01' AND '2025-12-31'\n```\n\nThis allows indexes to be used effectively.\n\n---\n\n### 5. Optimize JOINs\n\n* Join only the necessary tables.\n* Ensure join columns are indexed.\n* Use `INNER JOIN` instead of `LEFT JOIN` when unmatched rows are not required.\n\n---\n\n### 6. Limit Returned Rows\n\nIf only a few records are needed:\n\n```sql\nSELECT *\nFROM Orders\nORDER BY order_date DESC\nLIMIT 10;\n```\n\nThis avoids processing unnecessary rows.\n\n---\n\n### 7. Avoid Unnecessary Subqueries\n\nSometimes replacing subqueries with joins improves performance.\n\nInstead of:\n\n```sql\nSELECT name\nFROM Customers\nWHERE customer_id IN\n(\n    SELECT customer_id\n    FROM Orders\n);\n```\n\nUse:\n\n```sql\nSELECT DISTINCT c.name\nFROM Customers c\nJOIN Orders o\nON c.customer_id = o.customer_id;\n```\n\n---\n\n### 8. Use Proper Data Types\n\nChoose appropriate data types:\n\n* `INT` instead of `VARCHAR` for numeric values.\n* `DATE` instead of storing dates as text.\n\nSmaller data types improve storage efficiency and query speed.\n\n---\n\n### 9. Partition Large Tables\n\nFor very large tables, partition data by date or another key so queries scan only relevant partitions.\n\n---\n\n### 10. Keep Database Statistics Updated\n\nUpdate statistics and rebuild indexes periodically so the query optimizer can choose efficient execution plans.\n\n---\n\n## Common Performance Optimization Techniques\n\n* ✔ Create indexes on frequently searched columns.\n* ✔ Use `EXPLAIN` to analyze query execution.\n* ✔ Avoid `SELECT *`; retrieve only required columns.\n* ✔ Optimize `WHERE` conditions.\n* ✔ Use efficient joins and index join columns.\n* ✔ Limit the number of returned rows.\n* ✔ Replace inefficient subqueries with joins where appropriate.\n* ✔ Use suitable data types.\n* ✔ Partition very large tables.\n* ✔ Regularly update statistics and maintain indexes.\n\n### Example\n\n**Slow Query:**\n\n```sql\nSELECT *\nFROM Orders\nWHERE customer_id = 1001;\n```\n\n**Optimized Query:**\n\n```sql\nCREATE INDEX idx_orders_customer\nON Orders(customer_id);\n\nSELECT order_id, order_date, total_amount\nFROM Orders\nWHERE customer_id = 1001;\n```\n\n**Benefits:**\n\n* Uses an index to find matching rows quickly.\n* Retrieves only the required columns instead of the entire row.\n* Reduces I/O and improves execution time.\n\nBy applying these techniques, SQL queries become faster, consume fewer resources, and scale better as the database grows.",
+          "scores": {
+            "contentRelevance": 9,
+            "structure": 8,
+            "technicalAccuracy": 9,
+            "communicationClarity": 8,
+            "confidence": 8
+          },
+          "overallScore": 8.4,
+          "strengths": [
+            "Provided a comprehensive list of techniques for optimizing SQL query performance",
+            "Used specific examples and code snippets to illustrate key points"
+          ],
+          "improvements": [
+            "Could have provided more nuanced explanations for certain techniques, such as indexing strategies",
+            "Would benefit from practicing concise and direct responses to improve communication clarity"
+          ],
+          "starMethodUsed": false,
+          "modelAnswerSummary": "A strong answer should cover identification of performance bottlenecks, indexing strategies, and query rewriting techniques, with specific examples and explanations of how these methods improve query performance.",
+          "verdict": "You have demonstrated a strong foundation in SQL query optimization, but focus on refining your explanations and delivery to take your responses to the next level."
+        }
+      ],
+      "report": {
+        "overallReadinessScore": 83,
+        "dimensionAverages": {
+          "contentRelevance": 8.8,
+          "structure": 8,
+          "technicalAccuracy": 9,
+          "communicationClarity": 8,
+          "confidence": 8
+        },
+        "topStrengths": [
+          "Provided detailed and relevant examples from projects or case studies",
+          "Demonstrated solid technical skills in SQL and database management",
+          "Identified key metrics for analyzing customer behavior"
+        ],
+        "priorityImprovements": [
+          "Enhance data visualization ideas for better insight presentation",
+          "Practice concise and direct responses to improve communication clarity",
+          "Consider adding more specifics and outcomes to make answers more compelling"
+        ],
+        "recommendedPrepPlan": [
+          "Review SQL optimization techniques and practice applying them to real-world scenarios",
+          "Focus on refining explanations and delivery to improve communication clarity",
+          "Develop a portfolio of case studies or projects that demonstrate technical skills and analytical thinking"
+        ],
+        "summary": "You demonstrated a strong foundation in technical skills, particularly in SQL and database management, and provided relevant examples from projects or case studies. However, there is room for improvement in communication clarity, data visualization, and adding more specifics to answers. With focused practice and refinement, you can enhance your performance and increase your readiness for a data analyst role. Prioritize reviewing SQL optimization techniques, practicing concise responses, and developing a portfolio of case studies to showcase your skills."
+      }
+    }
+  ],
+  "users": []
+}
